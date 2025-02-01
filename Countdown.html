@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown for My Love ❤️</title>
+    
+    <!-- Dancing Script Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            background-color: #000;
+            color: #ff69b4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        h1, #countdown, #message, .heart {
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+        h1 { font-size: 3em; }
+        #countdown { font-size: 2.5em; font-weight: bold; }
+        #message { font-size: 1.8em; font-style: italic; max-width: 70%; margin-top: 20px; }
+        .heart { font-size: 2.5em; color: #ff1493; animation: heartbeat 1.5s infinite, float 3s ease-in-out infinite alternate; }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* Heartbeat Animation */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            font-size: 3em;
+            opacity: 0;
+            animation: explode 1.5s ease-in-out infinite;
+        }
+        @keyframes explode {
+            0% { transform: scale(0.5); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Floating Teddy */
+        .teddy {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 120px;
+            height: auto;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Countdown to Our Special Day ❤️</h1>
+    <div id="countdown"></div>
+    <p id="message"></p>
+    <div class="heart">❤️</div>
+
+    <!-- Teddy Bear Image -->
+    <img src="https://i.gifer.com/2GU.gif" alt="Cute Teddy" class="teddy">
+
+    <!-- Background Music -->
+    <audio id="loveSong" autoplay loop>
+        <source src="your-song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function startCountdown(targetDate) {
+            function updateCountdown() {
+                let now = new Date().getTime();
+                let timeLeft = targetDate - now;
+
+                if (timeLeft <= 0) {
+                    document.getElementById("countdown").innerHTML = "It's time, my love! 🎉";
+                    document.getElementById("message").innerHTML = "Our special day is here! I love you ❤️";
+                    showFireworks();
+                    return;
+                }
+
+                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = 
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        function changeMessage() {
+            const messages = [
+                "Every second brings me closer to you ❤️",
+                "You are my greatest adventure 😘",
+                "Can't wait to celebrate our love! 💖",
+                "You make my world brighter ☀️",
+                "I love you more than words can say! 💕"
+            ];
+            let index = 0;
+            setInterval(() => {
+                document.getElementById("message").innerHTML = messages[index];
+                index = (index + 1) % messages.length;
+            }, 5000); // Change message every 5 seconds
+        }
+
+        function showFireworks() {
+            for (let i = 0; i < 5; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("firework");
+                firework.innerHTML = "🎆";
+                firework.style.left = `${Math.random() * 100}vw`;
+                firework.style.top = `${Math.random() * 100}vh`;
+                firework.style.animationDuration = `${1 + Math.random()}s`;
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1500);
+            }
+            setTimeout(showFireworks, 500);
+        }
+
+        function playMusic() {
+            let audio = document.getElementById("loveSong");
+            audio.play();
+        }
+
+        let eventDate = new Date("2025-02-25T00:00:00").getTime();
+        startCountdown(eventDate);
+        changeMessage();
+        setTimeout(() => {
+            if (new Date().getTime() >= eventDate) showFireworks();
+        }, eventDate - new Date().getTime());
+
+        // Auto-play music when user interacts with the page
+        document.addEventListener("click", playMusic);
+    </script>
+
+</body>
+</html>
